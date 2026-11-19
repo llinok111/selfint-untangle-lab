@@ -42,6 +42,7 @@ Pick any of the 60 cases: wireframe = injected mesh, solid = repaired mesh; the 
 | witnesses | **967/967** crossing pairs pass `checkWitness` (on both planes, inside both triangles) | float64 classifier: not used for claims |
 | topology | **60/60** with 0 boundary, 0 non-manifold, 0 reversed edges (144 edges) | injected meshes are also edge-manifold, so topology alone cannot catch the defect |
 | volume | **60/60 exactly** `W·H·T` in integer arithmetic (`[6V, 6]` rational, no tolerance) | detection-only: volume wrong on 60/60 |
+| false positives | **60/60 clean meshes untouched** (0 actions, 0 remaining defects) | repair never invents an edit on a sound mesh |
 | containment | **0 misses / 0 ambiguous of 60,000 points** (600 uniform + 400 in the spike column per case) | detection-only: 5,930 misses / 12,000 points |
 | scale | **30/30** runs at ×10, ×100, ×1000 keep the same defect count, 0 remaining, exact scaled volume | no absolute epsilon exists to break |
 | corpus | regenerated **byte-identical** sha256 `8c83b60d…` | `rm -rf data && node tools/gen-sample.mjs` |
@@ -54,7 +55,8 @@ The RSD is above 10% because repetition 1 pays JIT/GC warm-up (1599.1 ms) while 
 1. Detection, volume and acceptance use only BigInt integer arithmetic — no epsilon anywhere.
 2. A move is accepted only with a *positive* certificate: the ring is exactly planar, the projected apex is strictly inside the ring polygon, and the fan area equals the polygon area exactly. A wrong move cannot pass.
 3. Acceptance also requires a strict decrease in exact defect pairs; the loop stops and reports whatever remains, so a failed case is visible, never silently "repaired".
-4. Geometry preservation is checked against an analytic box (`W·H·T` volume, inside/outside membership), not against values produced by the repair itself.
+4. A negative control runs the repair on all 60 *unmodified* box meshes: 60/60 stay untouched with 0 actions, so the accept path is not "move something until defects vanish".
+5. Geometry preservation is checked against an analytic box (`W·H·T` volume, inside/outside membership), not against values produced by the repair itself.
 
 ## Known limitations (honest scope)
 

@@ -77,12 +77,20 @@ for (const c of data.cases.filter((_, i) => i % 6 === 0)) {
   }
 }
 
+// negative control: clean meshes must stay untouched (no invented edits)
+let cleanNoOp = 0;
+for (const c of data.cases) {
+  const r = repair(parseMesh(c.original));
+  if (r.actions.length === 0 && r.defects === 0) cleanNoOp++;
+  assert(r.actions.length === 0 && r.defects === 0, `${c.id}: repair touched a clean mesh (${r.actions.length} actions)`);
+}
+
 // baseline: detection-only leaves every case defective
 const baseline = JSON.parse(execFileSync(process.execPath, ["baseline/detect-only.mjs"], { encoding: "utf8" }));
 
 console.log(`G4 cases=${cases} defectsBefore=${defectsBefore} actions=${actions} repaired=${repaired}/${cases} watertight=${watertight}/${cases} exactVolume=${exactVolume}/${cases}`);
 console.log(`G4 witnesses=${witnessesOk}/${witnesses} containment=${points - misses}/${points} misses=${misses} ambiguous=${ambiguous}`);
-console.log(`G4 scaleInvariant=${scaleOk}/30  defectsByClass=${JSON.stringify(defectByClass)}`);
+console.log(`G4 scaleInvariant=${scaleOk}/30  cleanNoOp=${cleanNoOp}/60  defectsByClass=${JSON.stringify(defectByClass)}`);
 console.log(`G1 baseline(detection-only) defectiveCases=${baseline.defectiveCases}/${cases} remainingDefects=${baseline.remainingDefects}`);
 
 assert(repaired === cases, `repair ${repaired}/${cases}`);
@@ -91,6 +99,7 @@ assert(exactVolume === cases, `volume ${exactVolume}/${cases}`);
 assert(witnessesOk === witnesses && witnesses > 0, `witnesses ${witnessesOk}/${witnesses}`);
 assert(misses === 0 && ambiguous === 0, `containment misses=${misses} ambiguous=${ambiguous}`);
 assert(scaleOk === 30, `scale ${scaleOk}/30`);
+assert(cleanNoOp === cases, `clean no-op ${cleanNoOp}/${cases}`);
 assert(baseline.defectiveCases === cases, `baseline defective ${baseline.defectiveCases}/${cases}`);
 
 if (fail.length) { console.error("FAIL\n" + fail.join("\n")); process.exit(1); }
