@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-11-19T02:27:15.164Z",
+  "node": "v24.19.0",
+  "cases": 60,
+  "benchCases": 30,
+  "trianglesPerMesh": 96,
+  "coldStart": {
+    "ms": 103.197,
+    "remainingDefects": 0,
+    "actions": 1
+  },
+  "warm": {
+    "samples": 5,
+    "totalMs": [
+      1599.129,
+      1332.861,
+      1233.267,
+      1222.475,
+      1216.213
+    ],
+    "minMs": 1216.213,
+    "medianMs": 1233.267,
+    "p95Ms": 1599.129,
+    "stddevMs": 145.52,
+    "rsdPct": 11.02,
+    "perCaseMedianMs": 33.29,
+    "perCaseMaxMs": 69.585
+  },
+  "detectionOnlyMs": 228.372,
+  "claim": {
+    "defectsBefore": 967,
+    "defectsAfter": 0,
+    "spikes": 90,
+    "casesRepaired": 60,
+    "containmentPoints": 60000,
+    "containmentMisses": 0,
+    "exactVolumeCases": 60,
+    "scaleRuns": 30
+  }
+}

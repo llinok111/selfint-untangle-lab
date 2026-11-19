@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>selfint-untangle-lab — exact spike repair</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; font: 13px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; background: #0d1117; color: #c9d1d9; }
+  #hud { position: absolute; top: 12px; left: 12px; padding: 12px 14px; background: #161b22cc; border: 1px solid #30363d; border-radius: 8px; max-width: 380px; }
+  h1 { font-size: 14px; margin: 0 0 8px; color: #e6edf3; }
+  select { background: #0d1117; color: #c9d1d9; border: 1px solid #30363d; border-radius: 4px; padding: 3px 6px; }
+  table { border-collapse: collapse; margin-top: 8px; width: 100%; }
+  td { padding: 1px 6px 1px 0; }
+  td:last-child { text-align: right; color: #7ee787; }
+  .bad { color: #ff7b72 !important; }
+  .note { color: #8b949e; margin-top: 8px; }
+  canvas { display: block; }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.169.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.169.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="hud">
+  <h1>selfint-untangle-lab</h1>
+  <div>case <select id="case"></select></div>
+  <table>
+    <tr><td>defects before</td><td id="before">—</td></tr>
+    <tr><td>defects after</td><td id="after">—</td></tr>
+    <tr><td>spikes repaired</td><td id="actions">—</td></tr>
+    <tr><td>boundary edges</td><td id="boundary">—</td></tr>
+    <tr><td>volume / box</td><td id="volume">—</td></tr>
+  </table>
+  <div class="note">Solid = repaired mesh (exact predicates in <code>src/core.mjs</code>).
+  Wireframe = injected mesh. Numbers are computed by the same core the bench imports.</div>
+</div>
+<script type="module" src="./main.js"></script>
+</body>
+</html>
